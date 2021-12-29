@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import cron from 'node-cron';
 
 import projectModel from '../models/project';
 import userModel from '../models/user';
@@ -15,12 +14,6 @@ const getProjects = async (req: Request, res: Response) => {
 
 let workingTime = 0;
 let timerTask: any;
-// const run = () => {
-//     timerTask = cron.schedule('*/1 * * * * *', () => {
-//         workingTime += 1;
-//         console.log(workingTime);
-//     });
-// };
 
 const count = () => {
     workingTime += 1;
