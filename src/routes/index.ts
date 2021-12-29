@@ -1,11 +1,11 @@
 import express from 'express';
 
-const routes = express.Router();
+const router = express.Router();
 
-// import userRoutes from './user';
-// import projectRoutes from './project';
+import userRouter from './user';
+import projectRouter from './project';
 
-// routes.use('/users', userRoutes);
-// routes.use('/tasks', projectRoutes);
+router.use('/users', userRouter);
+router.use('/projects', projectRouter);
 
-export default routes;
+export default router;

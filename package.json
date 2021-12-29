@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --config nodemon.json src/app.ts"
+    "dev": "nodemon --config nodemon.json src/app.ts",
+    "start": "node",
+    "build": "node"
   },
   "repository": "https://github.com/felmez/tracker.git",
   "author": "felmez <sofelmez@gmail.com>",
