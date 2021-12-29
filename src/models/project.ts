@@ -1,11 +1,12 @@
-import mongoose, { Schema, Types } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 interface Project {
     description: string;
-    startDate: Date;
+    startDate: string;
     workingTime: number;
-    finishDate: Date;
+    finishDate: string;
     userRef: object;
+    isStopped: boolean;
 }
 
 const ProjectSchema = new Schema<Project>({
@@ -14,9 +15,9 @@ const ProjectSchema = new Schema<Project>({
         required: true
     },
     startDate: {
-        type: Date,
+        type: String,
         required: true,
-        default: new Date
+        default: new Date().toUTCString()
     },
     workingTime: {
         type: Number,
@@ -24,12 +25,16 @@ const ProjectSchema = new Schema<Project>({
         default: 0
     },
     finishDate: {
-        type: Date
+        type: String
     },
     userRef: {
         type: Schema.Types.ObjectId,
         ref: 'users',
         required: true
+    },
+    isStopped: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 
