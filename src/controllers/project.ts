@@ -17,7 +17,6 @@ let timerTask: any;
 
 const count = () => {
     workingTime += 1;
-    console.log(workingTime);
 };
 
 const run = () => {
@@ -27,8 +26,7 @@ const run = () => {
 const stop = () => {
     clearInterval(timerTask);
     const total = new Date(workingTime * 1000).toUTCString().substring(17, 25);
-    console.log('time here', total);
-    console.log('timer stopped');
+    console.log('timer stopped', total);
 };
 
 const startWork = async (req: Request, res: Response) => {
@@ -83,4 +81,40 @@ const stopWork = async (req: Request, res: Response) => {
 
 };
 
-export { getProjects, startWork, stopWork };
+const exportWork = async (req: Request, res: Response) => {
+    const { username } = req.body;
+
+    if (!username) return res.status(422).json('please enter username field');
+
+    const user: any = await userModel.findOne({ username: username });
+
+    if (!user) return res.status(200).json('user not found');
+
+    const projects = await projectModel.find({ userRef: user._id, isStopped: true });
+
+    if (projects.length < 1) return res.status(200).json('no previous work yet');
+
+    const totalWork: object[] = [];
+
+    for (let i = 0; i < projects.length; i++) {
+        const alreadyWorkedDay: any = totalWork.find((e: any) => e.date === projects[i].startDate.substring(0, 16));
+
+        if (alreadyWorkedDay) {
+            alreadyWorkedDay.totalWorkTime += projects[i].workingTime;
+        } else {
+            const singleDay = {
+                date: projects[i].startDate.substring(0, 16),
+                totalWorkTime: projects[i].workingTime
+            };
+            totalWork.push(singleDay);
+        }
+    }
+
+    totalWork.forEach((item: any) => {
+        console.log(new Date(item.totalWorkTime * 1000).toUTCString().substring(17, 25));
+    });
+
+    res.status(200).json(totalWork);
+};
+
+export { getProjects, startWork, stopWork, exportWork };
