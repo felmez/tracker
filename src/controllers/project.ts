@@ -61,9 +61,9 @@ const startWork = async (req: Request, res: Response) => {
 const stopWork = async (req: Request, res: Response) => {
     const { username, description } = req.body;
 
-    const user = await userModel.findOne({ username: username });
+    const user: any = await userModel.findOne({ username: username });
 
-    const project = await projectModel.findOne({ description: description, isStopped: false });
+    const project = await projectModel.findOne({ description: description, isStopped: false, userRef: user._id });
 
     if (!user) return res.status(200).json('user not found');
     if (!project) return res.status(200).json('project is not found or already stopped');
@@ -138,4 +138,20 @@ const exportWork = async (req: Request, res: Response) => {
     res.status(200).json(records);
 };
 
-export { getProjects, startWork, stopWork, exportWork };
+const deleteWork = async (req: Request, res: Response) => {
+    const projectID = req.params.id;
+
+    const project = await projectModel.findOne({ _id: projectID });
+
+    if (project) {
+        await projectModel.findByIdAndDelete(projectID).then(() => {
+            res.status(200).json('work deleted successfully');
+        }).catch(() => {
+            res.status(422).json('could not delete this work');
+        });
+    } else {
+        res.status(200).json('project not found');
+    }
+};
+
+export { getProjects, startWork, stopWork, exportWork, deleteWork };

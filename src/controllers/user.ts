@@ -26,4 +26,20 @@ const createUser = async (req: Request, res: Response) => {
     }
 };
 
-export { getUsers, createUser };
+const deleteUser = async (req: Request, res: Response) => {
+    const userID = req.params.id;
+
+    const user = await userModel.findOne({ _id: userID });
+
+    if (user) {
+        await userModel.findByIdAndDelete(userID).then(() => {
+            res.status(200).json('user deleted successfully');
+        }).catch(() => {
+            res.status(422).json('could not delete this user');
+        });
+    } else {
+        res.status(200).json('user not found');
+    }
+};
+
+export { getUsers, createUser, deleteUser };
