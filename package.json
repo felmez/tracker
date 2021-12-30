@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --config nodemon.json src/app.ts",
-    "start": "node dist/app.js",
+    "start": "npm run build && node dist/app.js",
     "build": "tsc",
     "test": "mocha --exit --require ts-node/register --watch-extensions ts 'test/**/*.ts'"
   },
