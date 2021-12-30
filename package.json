@@ -4,8 +4,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --config nodemon.json src/app.ts",
-    "start": "npm run build && node dist/app.js",
+    "start": "node dist/app.js",
+    "tsc": "./node_modules/typescript/bin/tsc",
     "build": "tsc",
+    "postinstall": "npm run build",
     "test": "mocha --exit --require ts-node/register --watch-extensions ts 'test/**/*.ts'"
   },
   "repository": "https://github.com/felmez/tracker.git",
