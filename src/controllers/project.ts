@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+
 import projectModel from '../models/project';
 import userModel from '../models/user';
 
@@ -104,17 +106,36 @@ const exportWork = async (req: Request, res: Response) => {
         } else {
             const singleDay = {
                 date: projects[i].startDate.substring(0, 16),
-                totalWorkTime: projects[i].workingTime
+                totalWorkTime: projects[i].workingTime,
+                username: user.username
             };
             totalWork.push(singleDay);
         }
     }
 
+    const records: object[] = [];
+
     totalWork.forEach((item: any) => {
-        console.log(new Date(item.totalWorkTime * 1000).toUTCString().substring(17, 25));
+        const formattedWork = {
+            totalWork: new Date(item.totalWorkTime * 1000).toUTCString().substring(17, 25), ...item
+        };
+        records.push(formattedWork);
     });
 
-    res.status(200).json(totalWork);
+    const csvWriter = createCsvWriter({
+        path: 'src/work.csv',
+        header: [
+            { id: 'date', title: 'DATE' },
+            { id: 'totalWork', title: 'TOTAL WORK' },
+            { id: 'username', title: 'USERNAME' }
+        ]
+    });
+
+    csvWriter.writeRecords(records).then(() => {
+        console.log('CSV file exporting done...');
+    });
+
+    res.status(200).json(records);
 };
 
 export { getProjects, startWork, stopWork, exportWork };
