@@ -32,7 +32,7 @@ const stop = () => {
 };
 
 const startWork = async (req: Request, res: Response) => {
-    const { username, description, startDate } = req.body;
+    const { username, description } = req.body;
 
     const user = await userModel.findOne({ username: username });
 
@@ -76,7 +76,7 @@ const stopWork = async (req: Request, res: Response) => {
 
         await project.save();
 
-        res.status(201).json(project);
+        res.status(200).json(project);
     } catch (error) {
         res.status(422).json(error);
     }
