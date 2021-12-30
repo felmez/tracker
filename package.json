@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --config nodemon.json src/app.ts",
-    "start": "node",
-    "build": "node"
+    "start": "node dist/app.js",
+    "build": "tsc"
   },
   "repository": "https://github.com/felmez/tracker.git",
   "author": "felmez <sofelmez@gmail.com>",
