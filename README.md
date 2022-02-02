@@ -1,5 +1,5 @@
 # tracker
-working time tracker - nextrope
+working time tracker
 ![diagram](https://raw.githubusercontent.com/felmez/tracker/main/diagram.jpeg?token=ADMG2PIXNBNYZVEEF7564E3B24P5E)
 ### how to run this project
 - clone the repository
